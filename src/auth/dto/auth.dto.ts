@@ -10,3 +10,12 @@ export class AuthDto {
     @IsNotEmpty()
     name: string;
 }
+
+export class AuthTokenInformation{
+    @IsNotEmpty()
+    @IsEmail()
+    email:string;
+
+    @IsNotEmpty()
+    userId:number;
+} 

@@ -4,9 +4,6 @@ import { PrismaController } from './prisma.controller';
 import { PrismaService } from './prisma.service';
 @Global()
 @Module({
-imports: [
-    ConfigModule.forRoot(),
-],
   providers: [PrismaService],
   controllers: [PrismaController],
   exports: [PrismaService]
