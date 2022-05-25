@@ -22,6 +22,8 @@ export class AuthService {
                   }
                        })
                        // return user
+                       delete user.password;
+
                        return user;
        } catch (error) {
         if(error instanceof PrismaClientKnownRequestError){
@@ -37,7 +39,22 @@ export class AuthService {
 
    }
     
-   async signin(){
-
+   async signin(dto:AuthDto){
+        // find the user by email
+        const user = await this.prisma.user.findUnique({
+            where:{
+                email:dto.email
+            }
+        })
+        // compare the password
+        if(!user){
+            throw new ForbiddenException('Invalid email or password');
+        }
+        if(!await argon.verify(user.password,dto.password)){
+            throw new ForbiddenException('Invalid email or password');
+        }
+        delete user.password;
+        // return the user
+        return user;
     }
 }
