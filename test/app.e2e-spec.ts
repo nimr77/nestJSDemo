@@ -26,15 +26,19 @@ await app.listen('4000');
 afterAll(async () => {
   app.close();
 });
+const user:AuthDto = {email:'test@email.net',password:'test',name:'test'};
 
 describe('auth', () => {
   describe('singup', () => {
     it('should return a token', async () => {
-      const dto:AuthDto = {email:'test@email.net',password:'test',name:'test'};
-     return pactum.spec().post(host+'/auth/signup').withBody(dto).inspect()
+     return pactum.spec().post(host+'/auth/signup').withBody(user).inspect()
     })
   })
-  describe('signin', () => {})
+  describe('signin', () => {
+    it('should return a token', async () => {
+     return pactum.spec().post(host+'/auth/signin').withBody(user).inspect()
+    })
+  })
 })
 
 

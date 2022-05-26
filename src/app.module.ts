@@ -14,7 +14,7 @@ import { UsersModule } from './users/users.module';
         UsersModule,
         BookmarkModule,
         PrismaModule
-    ]
+    ],
 })
 export class AppModule {
     // constructor(parameters) {
