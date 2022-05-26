@@ -7,7 +7,7 @@ import { PrismaService } from '../src/prisma/prisma.service';
 describe('App e2e', () => {
   let app: INestApplication;
   let prisma: PrismaService;
-  const localhost = 'http://localhost:3000';
+  let host: string;
 beforeAll(async () => {
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],
@@ -18,17 +18,20 @@ beforeAll(async () => {
   }));
 await  app.init();
  prisma =  app.get(PrismaService);
+await app.listen('4000');
+ host = `http://localhost:4000`;
  await prisma.cleanDB();
 });
 
 afterAll(async () => {
   app.close();
 });
+
 describe('auth', () => {
   describe('singup', () => {
     it('should return a token', async () => {
       const dto:AuthDto = {email:'test@email.net',password:'test',name:'test'};
-     return pactum.spec().post(localhost+'/auth/signup').withBody(dto)
+     return pactum.spec().post(host+'/auth/signup').withBody(dto).inspect()
     })
   })
   describe('signin', () => {})
