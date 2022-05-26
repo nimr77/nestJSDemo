@@ -59,10 +59,13 @@ export class AuthService {
         }
         delete user.password;
         // return the user
-        return await this.singToken({
+        const token = await this.singToken({
             userId:user.id,
             email:user.email 
         });
+        return {
+            token:token,
+        }
     }
 
   async  singToken(info:AuthTokenInformation){

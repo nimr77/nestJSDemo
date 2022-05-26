@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as pactum from 'pactum';
 import { AuthDto } from 'src/auth/dto';
+import { CreateBookmarkDto } from 'src/bookmark/dto';
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 describe('App e2e', () => {
@@ -27,7 +28,12 @@ afterAll(async () => {
   app.close();
 });
 const user:AuthDto = {email:'test@email.net',password:'test',name:'test'};
-
+const bookmark:CreateBookmarkDto = {
+  description:'test',
+  url:'http://test.com',
+  tags:['test'],
+  userId:1
+} 
 describe('auth', () => {
   describe('singup', () => {
     it('should return a token', async () => {
@@ -36,22 +42,28 @@ describe('auth', () => {
   })
   describe('signin', () => {
     it('should return a token', async () => {
-     return pactum.spec().post(host+'/auth/signin').withBody(user).inspect()
+      await pactum.spec().post(host+'/auth/signin').withBody(user).stores('token','token');
+    
     })
   })
 })
+ 
+describe('bookmark', () => {
+  describe('create bookmark', () => {
 
-
+    it('should return a bookmark', async () => {
+      return pactum.spec().post(host+'/bookmark').withBody(bookmark).withHeaders({Authorization:'bearer $S{token}'}).inspect()
+    });
+  }) 
+  describe('edit bookmark', () => {})
+  describe('delete bookmark', () => {})
+  describe('get bookmark', () => {})
+})
 describe('user', () => {
   describe('get user', () => {})
   describe('edit user', () => {}) 
 
 })
-describe('bookmark', () => {
-  describe('create bookmark', () => {}) 
-  describe('edit bookmark', () => {})
-  describe('delete bookmark', () => {})
-  describe('get bookmark', () => {})
-})
+
 
 });
