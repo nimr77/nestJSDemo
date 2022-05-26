@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "db:test:up": "docker-compose up -d test-db",
-    "db:test:deploy": "npx prisma migrate deploy",
+    "db:test:deploy": "dotenv -e .env.test npx prisma migrate deploy",
     "db:test:restart": "docker-compose restart test-db && yarn db:test:deploy",
 
     "db:dev:deploy": "dotenv -e .env.test npx prisma migrate deploy",

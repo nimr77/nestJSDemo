@@ -13,5 +13,12 @@ export class PrismaService extends PrismaClient {
             }
         );
     }
-
+async cleanDB(){
+   await this.user.deleteMany({}).then(()=>{
+        console.log('DB cleaned');
+    });
+  await  this.bookmark.deleteMany({}).then(()=>{
+        console.log('DB cleaned');
+    });
+}
 }
